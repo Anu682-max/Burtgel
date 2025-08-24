@@ -11,14 +11,29 @@ const auth_1 = require("./middleware/auth");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3001;
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
-mongoose_1.default.connect('mongodb://localhost:27017/userapp')
+app.use((0, cors_1.default)({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true
+}));
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userapp';
+mongoose_1.default.connect(mongoUri)
     .then(() => console.log('MongoDB холбогдлоо'))
     .catch(err => console.error('MongoDB холболтын алдаа:', err));
 let users = [
     { id: 1, name: 'John Doe', email: 'john@example.com' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
 ];
+app.get('/', (req, res) => {
+    res.json({
+        message: 'CRUD User Management API',
+        version: '1.0.0',
+        status: 'OK',
+        timestamp: new Date().toISOString()
+    });
+});
+app.get('/health', (req, res) => {
+    res.json({ status: 'OK', uptime: process.uptime() });
+});
 app.post('/auth/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;

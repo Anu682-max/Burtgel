@@ -1,7 +1,12 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "CRUD User Management System Backend API",
   "main": "dist/server.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
@@ -9,12 +14,12 @@
     "dev:watch": "nodemon --exec ts-node src/server.ts",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["nodejs", "express", "mongodb", "jwt", "typescript", "crud", "api"],
+  "author": "Anu682-max",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",

@@ -9,10 +9,14 @@ const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
 
 // MongoDB холболт
-mongoose.connect('mongodb://localhost:27017/userapp')
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userapp';
+mongoose.connect(mongoUri)
   .then(() => console.log('MongoDB холбогдлоо'))
   .catch(err => console.error('MongoDB холболтын алдаа:', err));
 
@@ -27,6 +31,20 @@ let users: SimpleUser[] = [
   { id: 1, name: 'John Doe', email: 'john@example.com' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
 ];
+
+// Health check endpoint
+app.get('/', (req: Request, res: Response) => {
+  res.json({ 
+    message: 'CRUD User Management API', 
+    version: '1.0.0',
+    status: 'OK',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/health', (req: Request, res: Response) => {
+  res.json({ status: 'OK', uptime: process.uptime() });
+});
 
 // Authentication APIs
 app.post('/auth/register', async (req: Request, res: Response) => {
