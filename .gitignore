@@ -4,7 +4,7 @@ node_modules/
 
 # Production builds
 build/
-dist/
+# dist/ (commented out to include backend dist folder)
 
 # Environment variables
 .env
